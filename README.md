@@ -4,9 +4,7 @@ StudyCircle is a web application that helps university students create, discover
 
 ## Team Members
 - Yerlin Rodriguez — Team Lead
-- Team Member 2
-- Team Member 3
-- Team Member 4
+
 
 ## Tech Stack
 - Next.js (App Router)
