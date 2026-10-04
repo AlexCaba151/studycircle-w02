@@ -1,4 +1,6 @@
-const groups = [
+import Link from "next/link";
+
+const featuredGroups = [
   { name: "CSE 212 Study Group", course: "CSE 212", members: 5 },
   { name: "WDD 430 Team Practice", course: "WDD 430", members: 4 },
   { name: "Database Review", course: "CSE 341", members: 6 },
@@ -20,23 +22,33 @@ export default function Home() {
           </p>
         </header>
 
-        <div className="mb-8 flex flex-col gap-3 sm:flex-row">
-          <input
-            aria-label="Search study groups"
-            placeholder="Search by course or group name"
-            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3"
-          />
-          <button className="rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white">
+        <div className="mb-10 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/groups"
+            className="rounded-lg bg-blue-700 px-5 py-3 text-center font-semibold text-white hover:bg-blue-800"
+          >
+            Browse Study Groups
+          </Link>
+          <Link
+            href="/groups/create"
+            className="rounded-lg border border-blue-700 bg-white px-5 py-3 text-center font-semibold text-blue-700 hover:bg-blue-50"
+          >
             Create Group
-          </button>
+          </Link>
         </div>
 
         <section aria-labelledby="groups-heading">
-          <h2 id="groups-heading" className="mb-4 text-2xl font-bold text-slate-900">
-            Available groups
-          </h2>
+          <div className="mb-4 flex items-center justify-between">
+            <h2 id="groups-heading" className="text-2xl font-bold text-slate-900">
+              Featured groups
+            </h2>
+            <Link href="/groups" className="text-sm font-semibold text-blue-700 hover:underline">
+              View all
+            </Link>
+          </div>
+
           <div className="grid gap-4 md:grid-cols-3">
-            {groups.map((group) => (
+            {featuredGroups.map((group) => (
               <article
                 key={group.name}
                 className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
@@ -46,9 +58,12 @@ export default function Home() {
                 <p className="mt-1 text-sm text-slate-600">
                   {group.members} members
                 </p>
-                <button className="mt-5 rounded-md border border-blue-700 px-4 py-2 text-sm font-semibold text-blue-700">
+                <Link
+                  href="/groups"
+                  className="mt-5 inline-block rounded-md border border-blue-700 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50"
+                >
                   View Group
-                </button>
+                </Link>
               </article>
             ))}
           </div>
