@@ -12,19 +12,20 @@
   },
   "dependencies": {
     "next": "latest",
+    "next-auth": "^5.0.0-beta.32",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
-    "typescript": "latest",
+    "@tailwindcss/postcss": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "tailwindcss": "latest",
-    "@tailwindcss/postcss": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "eslint-config-prettier": "latest",
     "prettier": "latest",
-    "eslint-config-prettier": "latest"
+    "tailwindcss": "latest",
+    "typescript": "latest"
   }
 }
