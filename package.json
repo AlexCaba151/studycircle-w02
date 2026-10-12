@@ -2,29 +2,36 @@
   "name": "studycircle",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "eslint",
+  "format": "prettier --write .",
+  "format:check": "prettier --check .",
+  "postinstall": "prisma generate"
+},
   "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "next": "latest",
+    "next-auth": "^5.0.0-beta.32",
+    "pg": "^8.23.1",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
-    "typescript": "latest",
+    "@tailwindcss/postcss": "latest",
     "@types/node": "latest",
+    "@types/pg": "^8.23.1",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "tailwindcss": "latest",
-    "@tailwindcss/postcss": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "eslint-config-prettier": "latest",
     "prettier": "latest",
-    "eslint-config-prettier": "latest"
+    "prisma": "^7.10.0",
+    "tailwindcss": "latest",
+    "typescript": "latest"
   }
 }
