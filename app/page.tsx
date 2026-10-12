@@ -1,58 +1,89 @@
-const groups = [
-  { name: "CSE 212 Study Group", course: "CSE 212", members: 5 },
-  { name: "WDD 430 Team Practice", course: "WDD 430", members: 4 },
-  { name: "Database Review", course: "CSE 341", members: 6 },
-];
 
-export default function Home() {
+import Link from "next/link";
+import { prisma } from "../lib/prisma";
+import GroupCard from "./components/GroupCard";
+
+export const dynamic = "force-dynamic";
+
+type HomeProps = {
+  searchParams: Promise<{ q?: string }>;
+};
+
+export default async function Home({ searchParams }: HomeProps) {
+  const { q = "" } = await searchParams;
+
+  const groups = await prisma.studyGroup.findMany({
+    where: q.trim()
+      ? {
+          OR: [
+            { name: { contains: q.trim(), mode: "insensitive" } },
+            { course: { contains: q.trim(), mode: "insensitive" } },
+          ],
+        }
+      : undefined,
+    orderBy: { createdAt: "desc" },
+  });
+
   return (
-    <main className="min-h-screen bg-slate-50 px-6 py-12">
-      <section className="mx-auto max-w-5xl">
-        <header className="mb-10">
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
-            StudyCircle
-          </p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-900">
-            Find your next study group
-          </h1>
-          <p className="mt-3 max-w-2xl text-slate-600">
-            Create, discover, and manage study groups for your university courses.
-          </p>
-        </header>
+    <main className="mx-auto min-h-screen max-w-5xl px-4 py-12">
+      <p className="text-sm font-bold tracking-wider text-indigo-600">
+        STUDYCIRCLE
+      </p>
 
-        <div className="mb-8 flex flex-col gap-3 sm:flex-row">
+      <h1 className="mt-2 text-3xl font-bold text-slate-900">
+        Find your next study group
+      </h1>
+
+      <p className="mt-3 text-slate-600">
+        Create, discover, and manage study groups for your university courses.
+      </p>
+
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <form action="/" method="GET" className="flex-1">
+          <label htmlFor="q" className="sr-only">
+            Search groups
+          </label>
           <input
-            aria-label="Search study groups"
+            id="q"
+            name="q"
+            defaultValue={q}
             placeholder="Search by course or group name"
-            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3"
+            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-4 text-slate-900"
           />
-          <button className="rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white">
-            Create Group
-          </button>
-        </div>
+        </form>
 
-        <section aria-labelledby="groups-heading">
-          <h2 id="groups-heading" className="mb-4 text-2xl font-bold text-slate-900">
-            Available groups
-          </h2>
-          <div className="grid gap-4 md:grid-cols-3">
+        <Link
+          href="/groups/create"
+          className="rounded-lg bg-indigo-600 px-6 py-4 text-center font-semibold text-white hover:bg-indigo-700"
+        >
+          Create Group
+        </Link>
+      </div>
+
+      <section className="mt-8">
+        <h2 className="mb-4 text-xl font-bold text-slate-900">
+          Available groups
+        </h2>
+
+        {groups.length === 0 ? (
+          <p className="rounded-lg border border-slate-200 bg-white p-6 text-slate-600">
+            {q
+              ? "No groups match your search."
+              : "No study groups yet. Create the first one!"}
+          </p>
+        ) : (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {groups.map((group) => (
-              <article
-                key={group.name}
-                className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
-              >
-                <h3 className="font-bold text-slate-900">{group.name}</h3>
-                <p className="mt-2 text-sm text-slate-600">{group.course}</p>
-                <p className="mt-1 text-sm text-slate-600">
-                  {group.members} members
-                </p>
-                <button className="mt-5 rounded-md border border-blue-700 px-4 py-2 text-sm font-semibold text-blue-700">
-                  View Group
-                </button>
-              </article>
+              <GroupCard
+                key={group.id}
+                id={group.id}
+                name={group.name}
+                course={group.course}
+                description={group.description}
+              />
             ))}
           </div>
-        </section>
+        )}
       </section>
     </main>
   );
